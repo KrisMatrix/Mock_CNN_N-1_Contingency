@@ -21,16 +21,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2 # Updated version
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.4.0 # Updated version
         with:
           python-version: '3.11'
 
       - name: Install marimo
         run: pip install marimo
 
+      # Replace 'notebook.py' with the actual filename of your marimo notebook
       - name: Export notebook to WASM HTML
         run: |
           mkdir dist
