@@ -28,13 +28,13 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install marimo
-        run: pip install marimo
+      - name: Install marimo and uv
+        run: pip install marimo uv
 
       # Replace 'notebook.py' with the actual filename of your marimo notebook
       - name: Export notebook to WASM HTML
         run: |
-          mkdir dist
+          mkdir -p dist
           marimo export html-wasm contingency_notebook.py --output dist/index.html
 
       - name: Setup Pages
