@@ -9,16 +9,35 @@ Develop a 3-channel Convolutional Neural Network (CNN) recommendation system for
 
 | Phase | Description | Status |
 |---|---|---|
-| **Phase 1** | Virtual Environment Setup, 35-Bus Grid Generator, PowerWorld AUX Exporter & Parser, Admittance Matrix ($Y_{bus}$) Computation | ✅ Completed |
+| **Phase 1** | Virtual Environment Setup, 35-Bus Grid Generator, PowerWorld AUX Exporter & Parser, Admittance Matrix ($Y_{\text{bus}}$) Computation | ✅ Completed |
 | **Phase 2** | Synthetic Data Generator (5,000 samples, 3 channels: Admittance, Real Power $P$, Reactive Power $Q$, N-1 labels) & Dataset Split | ✅ Completed |
 | **Phase 3** | TensorFlow / Keras 2D CNN Architecture Design (`(35, 35, 3)` $\rightarrow$ `(35, 35)`) | ✅ Completed |
 | **Phase 4** | Model Training & Validation Engine (TensorFlow Keras) with Checkpointing | ✅ Completed |
 | **Phase 5** | Model Evaluation (Test set) & Comprehensive Visualization Suite | ✅ Completed |
 | **Phase 6** | End-to-End Pipeline Integration (`main.py`) & Marimo Exploratory Notebook (`contingency_notebook.py`) | ✅ Completed |
+| **Phase 7** | GNN Variation Architecture (`gnn_model.py`), Continuous Dynamic Operational Topology, Master Orchestrator (`run_pipeline.py`) & Device Translation (`translate_predictions.py`) | ✅ Completed |
+| **Phase 8** | Dual Solver Engine (`data_generator.py --method {dc, ac}`), Full AC Newton-Raphson Solver (`pandapower`), Dual Comparative Benchmarks & Interactive Reports | ✅ Completed |
 
 ---
 
 ## Activity Log
+
+### [2026-09-20] Phase 8 Completed (Full AC Newton-Raphson Solver & Dual Benchmark Reports)
+- Added dual power flow solver modes in `data_generator.py` (`--method dc` vs `--method ac` via `pandapower`).
+- Optimized AC solver using vectorized NumPy DataFrame updates and Numba JIT acceleration for rapid 5,000-sample generation.
+- Evaluated non-linear thermal overloads ($>85\%$), voltage degradation ($V < 0.94\,\text{pu}$ or $V > 1.06\,\text{pu}$), and divergence collapse.
+- Trained CNN and GNN models on the AC dataset:
+  - **2D CNN (AC)**: Accuracy = `99.97%`, Precision = `98.70%`, Recall = `99.13%`, F1 = `0.9891`, ROC-AUC = `1.0000`
+  - **GNN (AC)**: Accuracy = `99.97%`, Precision = `98.52%`, Recall = `99.69%`, F1 = `0.9911`, ROC-AUC = `0.9999`
+- Generated comparative plots (`plots/08_cnn_vs_gnn_comparison_dc.png`, `plots/09_cnn_vs_gnn_comparison_ac.png`).
+- Exported PowerWorld AUX contingency recommendations (`data/n1_study_recommendations.aux`).
+- Fully updated [`MODEL_ANALYSIS_REPORT.md`](file:///c:/Users/kkGamingPC/Documents/Project1/MODEL_ANALYSIS_REPORT.md), [`contingency_report.html`](file:///c:/Users/kkGamingPC/Documents/Project1/contingency_report.html), and [`README.md`](file:///c:/Users/kkGamingPC/Documents/Project1/README.md).
+
+### [2026-09-20] Phase 7 Completed (GNN Variation, Dynamic Topology & PowerWorld Device Translation)
+- Updated `data_generator.py` to simulate continuous dynamic operational topology (maintenance branch outages, generator unit commitment switching, zonal load scaling).
+- Implemented GNN variation in `gnn_model.py`, `train_gnn.py`, `evaluate_gnn.py`, `visualize_gnn.py`, and `compare_models.py`.
+- Built master Python pipeline orchestrator `run_pipeline.py` and 1-click batch script `run_pipeline.bat`.
+- Built `translate_predictions.py` mapping model tensor outputs to physical 35-bus grid devices and exporting `data/n1_study_recommendations.aux`.
 
 ### [2026-09-15] Documentation & Interactive Notebook Finalized
 - Created [`README.md`](file:///c:/Users/kkGamingPC/Documents/Project1/README.md) containing project architecture, input channel specifications, test performance results table, domain explanations of ROC, PR, and Binary Prediction curves, file structure layout, and execution instructions.
