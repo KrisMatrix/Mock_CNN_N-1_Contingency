@@ -1,8 +1,8 @@
-name: Deploy marimo to GitHub Pages
+name: Deploy Report to GitHub Pages
 
 on:
   push:
-    branches: [ main ] # Change to your default branch if it's not main
+    branches: [ main ]
 
 permissions:
   contents: read
@@ -21,21 +21,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4.2.2 # Updated version
+        uses: actions/checkout@v4.2.2
 
-      - name: Set up Python
-        uses: actions/setup-python@v5.4.0 # Updated version
-        with:
-          python-version: '3.11'
-
-      - name: Install marimo and uv
-        run: pip install marimo uv
-
-      # Replace 'notebook.py' with the actual filename of your marimo notebook
-      - name: Export notebook to WASM HTML
+      - name: Prepare HTML Report and Plots Artifacts
         run: |
           mkdir -p dist
-          marimo export html-wasm contingency_notebook.py --output dist/index.html
+          cp contingency_report.html dist/index.html
+          cp contingency_report.html dist/contingency_report.html
+          if [ -d "plots" ]; then
+            cp -r plots dist/
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
